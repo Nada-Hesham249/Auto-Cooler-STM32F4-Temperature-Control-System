@@ -43,3 +43,16 @@ uint8 Gpio_ReadPin(uint8 PortName, uint8 PinNum) {
     return data;
 }
 
+void Gpio_SetAF(uint8 PortName, uint8 PinNumber, uint8 AF) {
+    uint8 addressIndex = PortName - GPIO_A;
+    GpioType* gpioDevice = (GpioType*) addressMap[addressIndex];
+
+    if (PinNumber < 8) {
+        gpioDevice->GPIO_AFRL &= ~((uint32)0x0F << (PinNumber * 4));
+        gpioDevice->GPIO_AFRL |=  ((uint32)AF       << (PinNumber * 4));
+    } else {
+        uint8 pos = PinNumber - 8;
+        gpioDevice->GPIO_AFRH &= ~((uint32)0x0F << (pos * 4));
+        gpioDevice->GPIO_AFRH |=  ((uint32)AF       << (pos * 4));
+    }
+}

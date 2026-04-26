@@ -59,6 +59,6 @@ uint8 Gpio_WritePin(uint8 PortName, uint8 PinNumber, uint8 Data);
 
 uint8 Gpio_ReadPin(uint8 PortName, uint8 PinNumber);
 
-
+void Gpio_SetAF(uint8 PortName, uint8 PinNumber, uint8 AF);
 
 #endif //GPIO_H
