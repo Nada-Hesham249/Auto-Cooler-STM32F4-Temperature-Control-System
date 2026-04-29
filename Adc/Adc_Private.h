@@ -39,9 +39,6 @@ typedef enum {
 #define ADC_COMMON_BASE_ADDR    0x40012300UL
 #define ADC_CCR (*(volatile uint32 *)(ADC_COMMON_BASE_ADDR + 0x04UL))
 
-// /*  ADDED: RCC REGISTER */
-// #define RCC_BASE_ADDR           0x40023800UL
-// #define RCC_APB2ENR             (*(volatile uint32 *)(RCC_BASE_ADDR + 0x44UL))
 
 /* SR bits */
 #define SR_AWD           0U
