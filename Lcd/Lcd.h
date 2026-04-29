@@ -55,6 +55,10 @@ void LCD_SendCommand(uint8 cmd);
 void LCD_SendData(uint8 data);
 void LCD_Print(char *str);
 void LCD_PrintChar(char c);
+//helper
+void LCD_PrintInt(uint16 value);
+void LCD_PrintFloat(float value, uint8 precision);
+void LCD_PrintCentered(uint8 row, char *str);
 
 #endif
 // #ifndef LCD_H

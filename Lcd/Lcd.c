@@ -111,109 +111,69 @@ void LCD_Print(char *str)
     }
 }
 
+//helper
+void LCD_PrintInt(uint16 value)
+{
+    char buf[6];
+    int i = 0;
 
+    if (value == 0)
+    {
+        LCD_PrintChar('0');
+        return;
+    }
 
-// #include "lcd.h"
-// #include "Timer.h"
-//
-// /* ===== simple delay ===== */
-// static void delay(volatile uint32 t)
-// {
-//     while(t--) {
-//         __asm__("nop");
-//     }
-// }
-//
-// /* ===== EN pulse ===== */
-// static void LCD_Enable(void)
-// {
-//     Gpio_WritePin(LCD_EN_PORT, LCD_EN_PIN, 1);
-//     delay(3000);
-//     Gpio_WritePin(LCD_EN_PORT, LCD_EN_PIN, 0);
-//     delay(3000);
-// }
-//
-// /* ===== send 4 bits ===== */
-// static void LCD_Send4Bits(uint8 data)
-// {
-//     Gpio_WritePin(LCD_D4_PORT, LCD_D4_PIN, (data >> 0) & 1);
-//     Gpio_WritePin(LCD_D5_PORT, LCD_D5_PIN, (data >> 1) & 1);
-//     Gpio_WritePin(LCD_D6_PORT, LCD_D6_PIN, (data >> 2) & 1);
-//     Gpio_WritePin(LCD_D7_PORT, LCD_D7_PIN, (data >> 3) & 1);
-//
-//     LCD_Enable();
-// }
-//
-// /* ===== send command ===== */
-// static void LCD_Cmd(uint8 cmd)
-// {
-//     Gpio_WritePin(LCD_RS_PORT, LCD_RS_PIN, 0);
-//
-//     LCD_Send4Bits(cmd >> 4);
-//     LCD_Send4Bits(cmd & 0x0F);
-//
-//     delay(5000);
-// }
-//
-// /* ===== send data ===== */
-// void LCD_PrintChar(char c)
-// {
-//     Gpio_WritePin(LCD_RS_PORT, LCD_RS_PIN, 1);
-//
-//     LCD_Send4Bits(c >> 4);
-//     LCD_Send4Bits(c & 0x0F);
-//
-//     delay(3000);
-// }
-//
-// /* ===== init ===== */
-// void LCD_Init(void)
-// {
-//     Gpio_Init(LCD_RS_PORT, LCD_RS_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
-//     Gpio_Init(LCD_EN_PORT, LCD_EN_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
-//
-//     Gpio_Init(LCD_D4_PORT, LCD_D4_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
-//     Gpio_Init(LCD_D5_PORT, LCD_D5_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
-//     Gpio_Init(LCD_D6_PORT, LCD_D6_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
-//     Gpio_Init(LCD_D7_PORT, LCD_D7_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
-//
-//     delay(50000);
-//
-//     /* init sequence */
-//     LCD_Send4Bits(0x03);
-//     delay(5000);
-//     LCD_Send4Bits(0x03);
-//     delay(5000);
-//     LCD_Send4Bits(0x03);
-//     LCD_Send4Bits(0x02);
-//
-//     LCD_Cmd(0x28); // 4-bit, 2 lines
-//     LCD_Cmd(0x0C); // display ON
-//     LCD_Cmd(0x06); // entry mode
-//     LCD_Cmd(0x01); // clear
-// }
-//
-// /* ===== clear ===== */
-// void LCD_Clear(void)
-// {
-//     LCD_Cmd(0x01);
-//     delay(5000);
-// }
-//
-// /* ===== cursor ===== */
-// void LCD_SetCursor(uint8 row, uint8 col)
-// {
-//     uint8 addr = (row == 0) ? 0x80 + col : 0xC0 + col;
-//     LCD_Cmd(addr);
-// }
-//
-// /* ===== print string ===== */
-// void LCD_Print(char *str)
-// {
-//     while(*str)
-//     {
-//         LCD_PrintChar(*str++);
-//     }
-// }
-//
+    while (value > 0 && i < 5)
+    {
+        buf[i++] = (value % 10) + '0';
+        value /= 10;
+    }
+
+    while (i > 0)
+    {
+        LCD_PrintChar(buf[--i]);
+    }
+}
+void LCD_PrintFloat(float value, uint8 precision)
+{
+    uint16 int_part = (uint16)value;
+    float frac = value - (float)int_part;
+
+    LCD_PrintInt(int_part);
+
+    LCD_PrintChar('.');
+
+    while (precision--)
+    {
+        frac *= 10;
+        uint8 digit = (uint8)frac;
+        LCD_PrintChar(digit + '0');
+        frac -= digit;
+    }
+}
+void LCD_PrintCentered(uint8 row, char *str)
+{
+    uint8 len = 0;
+    uint8 i = 0;
+    uint8 start;
+
+    while (str[len] != '\0' && len < 16)
+        len++;
+
+    if (len >= 16)
+    {
+        LCD_SetCursor(row, 0);
+        LCD_Print(str);
+        return;
+    }
+
+    start = (16 - len) / 2;
+
+    LCD_SetCursor(row, 0);
+
+    for (i = 0; i < start; i++)
+        LCD_PrintChar(' ');
+
+    LCD_Print(str);
+}
 
