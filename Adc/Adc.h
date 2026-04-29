@@ -70,7 +70,7 @@ uint16 Adc_ReadSingleChannel(void);
 
 /**
  * @brief  (Asynchronous) Trigger one conversion and return result via callback.
- *         
+ *
  * @param  Callback  Function called when conversion is ready (from ISR)
  */
 void Adc_ReadSingleChannelAsync(AdcSingleChannelCallback Callback);
@@ -110,3 +110,4 @@ void Adc_ScanChannelGroupAsync(uint16 *Results, uint8 NumChannels,
                             AdcMultiChannelCallback Callback);
 
 #endif /* ADC_H */
+
