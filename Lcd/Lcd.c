@@ -1,11 +1,12 @@
 #include "lcd.h"
 
 /* ================= Internal Delay Wrapper ================= */
-static void LCD_Delay(uint32 ms)
-{
-    for (volatile int i=0;i<1000;i++);
-}
+static void LCD_Delay(uint32 us) {
 
+    for (uint32 i = 0; i < (us * 5); i++) {
+        __asm("nop");  // Consume CPU cycles
+    }
+}
 /* ================= EN Pulse ================= */
 static void LCD_EnablePulse(void)
 {
@@ -39,7 +40,7 @@ static void LCD_Write(uint8 value, uint8 mode)
 void LCD_SendCommand(uint8 cmd)
 {
     LCD_Write(cmd, 0);
-    LCD_Delay(2);
+    LCD_Delay(1);
 }
 
 /* ================= Public: Data ================= */
@@ -60,14 +61,14 @@ void LCD_Init(void)
     Gpio_Init(LCD_D6_PORT, LCD_D6_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
     Gpio_Init(LCD_D7_PORT, LCD_D7_PIN, GPIO_OUTPUT, GPIO_PUSH_PULL);
 
-    LCD_Delay(50);
+    LCD_Delay(1);
 
     /* Init sequence */
     LCD_Write4Bits(0x03);
-    LCD_Delay(5);
+    LCD_Delay(1);
 
     LCD_Write4Bits(0x03);
-    LCD_Delay(5);
+    LCD_Delay(1);
 
     LCD_Write4Bits(0x03);
     LCD_Delay(1);
@@ -86,7 +87,7 @@ void LCD_Init(void)
 void LCD_Clear(void)
 {
     LCD_SendCommand(LCD_CLEAR_DISPLAY);
-    LCD_Delay(2);
+    LCD_Delay(1);
 }
 
 /* ================= Cursor ================= */

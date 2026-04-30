@@ -61,36 +61,3 @@ void LCD_PrintFloat(float value, uint8 precision);
 void LCD_PrintCentered(uint8 row, char *str);
 
 #endif
-// #ifndef LCD_H
-// #define LCD_H
-//
-// #include "Std_Types.h"
-// #include "Gpio.h"
-//
-// /* ===== Control Pins ===== */
-// #define LCD_RS_PORT GPIO_D
-// #define LCD_RS_PIN  0
-//
-// #define LCD_EN_PORT GPIO_D
-// #define LCD_EN_PIN  1
-//
-// /* ===== Data Pins (4-bit mode) ===== */
-// #define LCD_D4_PORT GPIO_D
-// #define LCD_D4_PIN  2
-//
-// #define LCD_D5_PORT GPIO_D
-// #define LCD_D5_PIN  3
-//
-// #define LCD_D6_PORT GPIO_D
-// #define LCD_D6_PIN  4
-//
-// #define LCD_D7_PORT GPIO_D
-// #define LCD_D7_PIN  5
-//
-// void LCD_Init(void);
-// void LCD_Clear(void);
-// void LCD_SetCursor(uint8 row, uint8 col);
-// void LCD_Print(char *str);
-// void LCD_PrintChar(char c);
-//
-// #endif
