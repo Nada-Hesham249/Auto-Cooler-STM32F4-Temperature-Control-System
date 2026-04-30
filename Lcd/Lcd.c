@@ -3,7 +3,7 @@
 /* ================= Internal Delay Wrapper ================= */
 static void LCD_Delay(uint32 us) {
 
-    for (uint32 i = 0; i < (us * 5); i++) {
+    for (uint32 i = 0; i < (us * 3); i++) {
         __asm("nop");  // Consume CPU cycles
     }
 }
@@ -19,18 +19,19 @@ static void LCD_EnablePulse(void)
 /* ================= Send 4 bits ================= */
 static void LCD_Write4Bits(uint8 data)
 {
+    //put data
     Gpio_WritePin(LCD_D4_PORT, LCD_D4_PIN, (data >> 0) & 1);
     Gpio_WritePin(LCD_D5_PORT, LCD_D5_PIN, (data >> 1) & 1);
     Gpio_WritePin(LCD_D6_PORT, LCD_D6_PIN, (data >> 2) & 1);
     Gpio_WritePin(LCD_D7_PORT, LCD_D7_PIN, (data >> 3) & 1);
 
-    LCD_EnablePulse();
+    LCD_EnablePulse(); //Enabe pulse
 }
 
 /* ================= Send Byte ================= */
 static void LCD_Write(uint8 value, uint8 mode)
 {
-    Gpio_WritePin(LCD_RS_PORT, LCD_RS_PIN, mode);
+    Gpio_WritePin(LCD_RS_PORT, LCD_RS_PIN, mode);  // RS that different between command and data
 
     LCD_Write4Bits(value >> 4);
     LCD_Write4Bits(value & 0x0F);
@@ -126,7 +127,7 @@ void LCD_PrintInt(uint16 value)
 
     while (value > 0 && i < 5)
     {
-        buf[i++] = (value % 10) + '0';
+        buf[i++] = (value % 10) + '0';  //convert to string
         value /= 10;
     }
 
