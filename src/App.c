@@ -49,7 +49,7 @@ void App_Init(void)
     LCD_SetCursor(1, 0U);
     LCD_Print("                ");
 
-    Pwm_Init(TIMER3, PWM_CHANNEL_1, 1599U, 99U);
+    Pwm_Init(TIMER3, PWM_CHANNEL_1, 159U, 99U);  //1kHz
     // Pwm_Init(TIMER3, PWM_CHANNEL_1, 15U, 99U);
     Pwm_Start(TIMER3, PWM_CHANNEL_1);
 
