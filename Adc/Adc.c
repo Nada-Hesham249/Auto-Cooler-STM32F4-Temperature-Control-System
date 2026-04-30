@@ -93,7 +93,10 @@ void Adc_ConfigSingleChannel_OneShot(uint8 Channel)
     SET_BIT(ADC1->CR2, CR2_EOCS);  // Interrupt after each conversion
 
     ADC1->SQR1 &= ~(0x0FUL << 20);
-    ADC1->SQR3 = Channel;
+
+    ADC1->SQR3 &= ~(0x1FUL << 0);
+    ADC1->SQR3 |= (uint32)Channel;
+
 
     Adc_SetSampleTime(Channel);
 }
