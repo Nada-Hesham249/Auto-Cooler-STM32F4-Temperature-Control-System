@@ -1,6 +1,6 @@
-# 🌡️ Auto-Cooler: Closed-Loop Temperature Control System (STM32F4)
+# Auto-Cooler: Closed-Loop Temperature Control System (STM32F4)
 
-## 📌 Overview
+##  Overview
 
 Auto-Cooler is a real-time embedded temperature control system implemented on the **STM32F4 microcontroller** and validated using **Proteus simulation**.
 
